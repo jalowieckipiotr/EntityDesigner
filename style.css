@@ -1,0 +1,85 @@
+html {
+  font-size: 10px;
+}
+body,html {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+footer
+{
+    margin:20px 0;
+    text-align: center;
+}
+
+.main-container
+{
+    width:100%;
+    height:100%;
+    box-sizing: border-box;
+    padding: 50px;
+}
+
+.toolbar
+{
+    margin-bottom:20px;
+}
+
+.toolbar .btn
+{
+    height:35px;
+    width:150px;
+    text-align: center;
+    color:black;
+}
+.entities-container
+{
+    width:100%;
+    height: 100%;
+    background-color: rgb(236, 236, 236);    
+    box-sizing: border-box;
+    border:1px solid grey;
+    position: relative;
+    
+}
+
+h1
+{
+    font-size:30px;
+    width:100%;
+    text-align: center;
+}
+
+.entity
+{
+    width:120px;
+    height:160px;
+    background-color: white;
+    border:1px solid grey;
+    position: absolute;
+}
+.entity .entity-header 
+{
+    width:100%;
+    line-height:30px;
+    background-color: beige;
+    border-bottom:1px solid grey;
+    vertical-align: middle;
+    text-align: center;
+    display: flex;
+    
+}
+
+.entity .entity-header .label
+{
+   font-size:14px;
+   font-weight:bold;
+   width:80%;
+}
+.entity .entity-header .btn-delete
+{
+   margin-left: auto;
+}

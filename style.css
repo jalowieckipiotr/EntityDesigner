@@ -20,20 +20,48 @@ footer
     width:100%;
     height:100%;
     box-sizing: border-box;
-    padding: 50px;
+    padding: 0 25px;
+    display: flex;
+    flex-direction: column;
 }
 
 .toolbar
 {
     margin-bottom:20px;
+    display: flex;
 }
-
+.toolbar .entity-input
+{
+    width:20%;
+    height:30px;
+    box-sizing: border-box;
+    outline: none;
+    padding-left: 10px;
+    border-style:solid;
+    border-color: grey;
+    border-width:1px;
+}
+.toolbar .entity-input:focus
+{
+    border-color: black;
+}
 .toolbar .btn
 {
-    height:35px;
-    width:150px;
+    margin-left: 15px;
+    box-sizing: border-box;
+    height:30px;
+    width:5%;
     text-align: center;
     color:black;
+    background-color: white;
+    border-color: grey;
+    border-width:1px;
+    outline: none;
+    font-weight: bold;
+}
+.toolbar .btn:focus
+{
+    border-color: black;
 }
 .entities-container
 {
@@ -55,20 +83,22 @@ h1
 
 .entity
 {
-    width:120px;
-    height:160px;
+    min-width:120px;
     background-color: white;
-    border:1px solid grey;
     position: absolute;
+    z-index: 2;
 }
 .entity .entity-header 
 {
     width:100%;
     line-height:30px;
     background-color: beige;
-    border-bottom:1px solid grey;
+    border-top:1px solid grey;
+    border-left:1px solid grey;
+    border-right:1px solid grey;
     vertical-align: middle;
     text-align: center;
+    box-sizing: border-box;
     display: flex;
     
 }
@@ -77,9 +107,72 @@ h1
 {
    font-size:14px;
    font-weight:bold;
-   width:80%;
+   width:100%;
 }
-.entity .entity-header .btn-delete
+.entity .entity-header .delete
 {
    margin-left: auto;
+   width:28px;
+   background-color: transparent;
+   border: solid grey;
+   border-width: 0px 0px 0px 1px;
+   font-weight: bold;
+   outline: none;
 }
+.entity .entity-body th
+{
+    height: 35px;   
+    font-size: 12px;
+}
+.entity .entity-body td
+{
+    line-height: 30px;
+    font-size:11px;
+    
+}
+
+.entity table {
+    border-collapse: collapse;
+}
+
+.entity table.entity-body, 
+.entity table.entity-body td,
+.entity table.entity-body th
+{
+    border: 1px solid grey;
+}
+.entity table.entity-body td span
+{
+    margin-left:10px;
+}
+.entity table.entity-body td input.column-name,
+.entity table.entity-body td select.column-type
+{
+    padding-left:10px;
+    height:30px;
+    border:none;
+    
+}
+.entity table.entity-body td select.column-type
+{
+    background-color: transparent;
+}
+
+.entities-container .line
+{
+    position: absolute;
+    display: flex;
+    z-index: 1;
+    height: 1px;
+    background-color: red;
+    align-self:center;
+}
+
+.entities-container .line span
+{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+

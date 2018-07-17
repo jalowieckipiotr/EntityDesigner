@@ -11,7 +11,7 @@ var EntityView = (function(view) {
         var name = _addEntityInput.value
         if(name != '' && name != null)
         {
-          var $elem = $('<div class="entity">')
+          var $elem = $('<div class="entity"/>')
           $elem.name = name;
           EntityService.addEntity($elem);
           _addEntityInput.value='';
@@ -19,14 +19,19 @@ var EntityView = (function(view) {
         }
             
     };
- 
     view.deleteEntity = function(entityId) {
         EntityService.deleteEntity(entityId);
+        updateView();
+    };
+    
+    view.deleteReference = function(referenceId) {
+        EntityService.deleteReference(referenceId);
         updateView();
     };
  
     return view;
  
+    
 })(EntityView || {});
 
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -35,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
 function updateView() {
+    console.log("aa")
     EntityRenderer.renderList(EntityView.getEntities());
-    
     
 }

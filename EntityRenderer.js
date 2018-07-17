@@ -4,6 +4,12 @@ var EntityRenderer = (function (renderer) {
     var $_containerRoot = null;
     
     // public
+    renderer.afterLogin = function () {
+        var $mainContainer = $('.main-container');
+        $mainContainer.removeClass("anonymous");
+        
+    };
+
     renderer.renderList = function (entities) {
         _initializeRoot();
         for (var i = 0; i < entities.length; i++) {
@@ -31,15 +37,20 @@ var EntityRenderer = (function (renderer) {
     }
 
     function _createEntityItem(entity) {
-        $_containerRoot.append(entity.$elem[0].outerHTML)
-        var $entity = $(".entity.id-" +entity.Id);
+        //
+        //var $entity = $(".entity.id-" +entity.Id);
+        var $entity = $(EntityTemplate.replace("{name}",entity.TableName)).addClass("id-"+entity.Id);
+        $_containerRoot.append($entity)
         $entity.css( "left", entity.Left);
         $entity.css( "top", entity.Top);        
         
         var $body = $entity.find(".entity-body");
+        if (typeof entity.Columns != 'undefined')
+        {
         for (var i = 0; i < entity.Columns.length; i++) {
-            _createEntityColumn(entity.Columns[i],$body);
+            _createEntityColumn(entity.Columns[i],$body, entity.Id);
         }  
+        }
         var $referencetables = $(".entity.id-" +entity.Id + " select.reference-tables");
         var entities=EntityView.getEntities()
         
@@ -55,24 +66,8 @@ var EntityRenderer = (function (renderer) {
         entity.referenceManage(entity);
         ///
         $.each(entities, function() {
-            var _entity = this;
-            
-            var canAdd =true;
-            
-            $.each(entity.References, function() {
-                var reference = this;
-                if(parseInt(reference.targetId) == parseInt(_entity.Id))
-                    canAdd =false;
-            });
-                   
-            $.each(entity.SourceReferences, function() {
-                var source_reference = this;
-                if(parseInt(source_reference.sourceId) == parseInt(_entity.Id))
-                    canAdd = false;
-            });
-            
-            
-            if (canAdd && _entity.Id !=entity.Id)
+            var _entity = this; 
+            if ( _entity.Id !=entity.Id)
                 {
                     $referencetables.append($("<option />").val(this.Id).text(this.TableName));   
                 }
@@ -80,10 +75,14 @@ var EntityRenderer = (function (renderer) {
             
         });
     }
-    function _createEntityColumn(column, $body) {
+    function _createEntityColumn(column, $body, entityId) {
         var $column_temp = $(ColumnTemplate.replace("{column_id}",column.id).replace("{column_name}",column.name).replace("{column_type}", column.type));
         $column_temp.find("input.nullable")[0].checked = column.nullable;
         $column_temp.find("input.pk")[0].checked = column.pk;
+        $column_temp.find("button.delete-column").click(function() {
+            
+            EntityView.deleteColumn(column.id, entityId);
+        });
         $body.append($column_temp);
     }
     //
@@ -121,6 +120,8 @@ var EntityRenderer = (function (renderer) {
         $entity.find("button.delete").click(function() {
             EntityView.deleteEntity(entity.Id);
         });
+
+       
         
         $_containerRoot.find("button.deleteReference").click(function() {
             var self = this;
@@ -145,7 +146,8 @@ var EntityRenderer = (function (renderer) {
         $entity.find("button.add-reference").click(function() {
             var targetName = $(".entity.id-" +entity.Id+" .reference-tables option:selected").text();
             var targetId = $(".entity.id-" +entity.Id+" .reference-tables option:selected").val();
-            entity.addReference(targetId,targetName,null);
+            var referenceName = $(".entity.id-" +entity.Id+" .reference-name").val();
+            entity.addReference(targetId,targetName,referenceName);
             EntityRenderer.renderList(EntityView.getEntities());
         });
         

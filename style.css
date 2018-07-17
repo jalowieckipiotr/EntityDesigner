@@ -24,7 +24,62 @@ footer
     display: flex;
     flex-direction: column;
 }
+.main-container.anonymous .toolbar,
+.main-container.anonymous .entities-container
+{
+    display:none;
+}
+.main-container.anonymous .login-container
+{
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+}
+.main-container:not(.anonymous) .login-container
+{
+    display:none;
+}
 
+.login-container input
+{
+    display: block;
+    height:30px;
+    width:100%;
+    box-sizing: border-box;
+    outline: none;
+    padding-left: 10px;
+    border-style:solid;
+    border-color: grey;
+    border-width:1px;
+    margin-top:15px;
+    max-width:400px;
+}
+.login-container input:hover
+{
+    border-color: black;
+    
+}
+.login-container .header
+{
+    font-size: 16px;
+    display: block;
+    margin-top:30px;
+}
+.login-container .btn
+{
+    margin-top: 15px;
+    box-sizing: border-box;
+    height:30px;
+    text-align: center;
+    color:black;
+    background-color: white;
+    border-color: grey;
+    border-width:1px;
+    outline: none;
+    font-weight: bold;
+    width:100%;
+}
 .toolbar
 {
     margin-bottom:20px;
@@ -59,7 +114,8 @@ footer
     outline: none;
     font-weight: bold;
 }
-.toolbar .btn:focus
+.toolbar .btn:focus,
+.login-container .btn:hover
 {
     border-color: black;
 }
@@ -173,6 +229,34 @@ h1
     margin-left: auto;
     margin-right: auto;
 }
+
+.deleteReference
+{
+    left: 50%;
+    top:-20px;
+    position: absolute;
+    background-color: transparent;
+    border-color: black;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius:5px;
+}
+.deleteReference:hover
+{
+    color:red;
+}
+
+.entity .delete-column
+{
+   margin-left: auto;
+   width:22px;
+   background-color: transparent;
+   border: none;
+   font-weight: bold;
+   outline: none;
+}
+
+
 
 
 

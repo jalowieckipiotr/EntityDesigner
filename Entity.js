@@ -1,4 +1,5 @@
-var EntityTemplate = `<div class="entity-header">
+var EntityTemplate = `<div class="entity">
+                    <div class="entity-header">
                         <span class="label">{name}</span>
                         <button type="submit" class="delete">x</button>
                      </div>
@@ -22,8 +23,12 @@ var EntityTemplate = `<div class="entity-header">
                               <select class="column-type" > 
                                 <option value="">Wybierz Typ</option> 
                                 <option value="int">int</option> 
-                                <option value="nvarchar">nvarchar</option> 
-                                <option value="guid">guid</option> 
+                                <option value="bigint">bigint</option> 
+                                <option value="nvarchar(max)">nvarchar</option> 
+                                <option value="uniqueidentifier">guid</option>
+                                <option value="numeric">numeric</option>
+                                <option value="date">date</option> 
+                                <option value="datetime">datetime</option> 
                               </select> 
                             </td>
                             <td>
@@ -39,7 +44,9 @@ var EntityTemplate = `<div class="entity-header">
                      </table>
                      <div class="entity-footer">
                         <select class="reference-tables" />
+                        <input class="reference-name" type="text" placeholder="Nazwa referencji" />
                         <button type="submit" class="add-reference">Dodaj FK</button>
+                     </div>
                      </div>`;
 
 var ColumnTemplate = `<tr class="entity-column">
@@ -58,24 +65,22 @@ var ColumnTemplate = `<tr class="entity-column">
                         <td>
                           <input class="pk" type="checkbox" disabled="disabled"/>
                         </td>
-                        <td/>
+                        <td>
+                        <button type="submit" class="delete-column">x</button>
+                        </td>
                      </tr>`;
 
 var Entity = $.inherit(
     {
-    __constructor : function($elem) { // constructor
+    __constructor : function(name, id, left, top, columns, references, sourceReferences) { // constructor
         var self = this;
-        self.$elem = $elem;
-        var $control = $(EntityTemplate.replace("{name}",$elem.name));
-        self.$elem.append($control);
-        self.TableName = $elem.name;
-        self.Id = Entity.UID++;
-        self.Left = 0;
-        self.Top = 0;
-        self.Columns=[];
-        self.References=[];
-        self.SourceReferences=[];
-        $elem.addClass("id-"+self.Id)
+        self.TableName = name;
+        self.Id = id;
+        self.Left = left;
+        self.Top = top;
+        self.Columns=columns;
+        self.References=references;
+        self.SourceReferences = sourceReferences;
     },
         
     onDrag: function (left, top) {
@@ -100,7 +105,7 @@ var Entity = $.inherit(
                 return entity.Id == targetId;
             })[0];
             var boxCenterXOffset = 150;
-            var boxCenterYOffset = 150;
+            var boxCenterYOffset = 150 + i*40;
                 
             var x1 = self.Left + boxCenterXOffset;
             var x2 = targetEntity.Left + boxCenterXOffset;
@@ -124,7 +129,7 @@ var Entity = $.inherit(
                 return entity.Id == sourceId;
             })[0];
             var boxCenterXOffset = 150;
-            var boxCenterYOffset = 150;
+            var boxCenterYOffset = 150+ i*40;
                 
             var x1 = self.Left + boxCenterXOffset;
             var x2 = sourceEntity.Left + boxCenterXOffset;
@@ -183,7 +188,7 @@ var Entity = $.inherit(
         
     },
         
-    addReference(targetId, targetName, fieldsList)
+    addReference(targetId, targetName, refName)
     {
         var self = this;
         var reference = new Object();
@@ -191,7 +196,11 @@ var Entity = $.inherit(
         reference.id=referenceId;
         reference.targetId=targetId;
         reference.targetName=targetName;
-        var referenceName = "fk_" + self.TableName + "_" + reference.targetName;
+        if(refName == '' ||refName ==null)
+        {
+            refName=referenceId;
+        }
+        var referenceName = "fk_" + self.TableName + "_" + reference.targetName + "_" +refName;
         reference.referenceName = referenceName;
         self.References.push(reference);
         EntityService.changeState(self);
@@ -207,12 +216,10 @@ var Entity = $.inherit(
         $.each(targetEntity.Columns, function() {
                 var column = this;
                 if (column.pk)
-                    self.addColumn(column.name, column.type, column.nullable, false);
+                    self.addColumn(column.name + "_" +refName, column.type, column.nullable, false);
                 
             
             });
-        //self.Columns
-        //targetEntity.addColumn()
         targetEntity.SourceReferences.push(sourceReference);
         EntityService.changeState(targetEntity);
         

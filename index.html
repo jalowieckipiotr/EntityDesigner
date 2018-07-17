@@ -16,16 +16,28 @@
   <script src="SQL_genrator.js"></script>
 </head>
 <body>    
-    <div class="main-container" >
+    <div class="main-container anonymous" >
         <header>
             <h1>Entity designer</h1>
         </header>
         <div class="toolbar">
             <input type="text" class="entity-input" placeholder="Nazwa encji" />
             <button type="submit" class="btn add-entity" onclick="EntityView.addEntity()" >Dodaj</button>
-            <button type="submit" class="btn add-entity" onclick="SQLGenerator.generateSript()" >Generuj skrypt</button>
+            <select class="sql-languages" ></select>
+            <button type="submit" class="btn generate-script">Generuj skrypt</button>
+
         </div>
         <div class="entities-container">
+        </div>
+        <div class="login-container">
+                <span class="header">Zaloguj się</span>
+                <input type="text" class="email" placeholder="Email" />
+                <input type="text" class="password" placeholder="Hasło" />
+                <button type="submit" class="btn login" onclick="EntityView.login()" >Zaloguj</button>
+                <span class="header">Nie masz konta? Zarejestruj się!</span>
+                <input type="text" class="email-register" placeholder="Email" />
+                <input type="text" class="password-register" placeholder="Hasło" />
+                <button type="submit" class="btn register" onclick="EntityView.register()" >Zarejestruj się</button>
         </div>
         <footer>
         <span class="sign">Created by Piotr Jałowiecki</span>
